@@ -9,6 +9,7 @@ public class AutoVersionOnBuild : IPreprocessBuildWithReport, IPostprocessBuildW
     public int callbackOrder => 0;
     const string PrefKey = "GGTOOLS_BUILD_ENABLE_FEATURE_X";
     bool changeProductName = false;
+    string patchNotes;
 
 
     string version;
@@ -24,6 +25,17 @@ public class AutoVersionOnBuild : IPreprocessBuildWithReport, IPostprocessBuildW
             "Yes",
             "No"
         );
+        TextInputDialog.Show("Would you kindly leave a Patch Notes for this build?", "100 characters", (value) =>
+        {
+            patchNotes = value;
+            var buildPath = report.summary.outputPath;
+
+            var buildFolder = Path.GetDirectoryName(buildPath);
+
+            File.WriteAllText(Path.Combine(buildFolder,"patchNotes.txt"), patchNotes);
+
+        });
+
 
 
         version = DateTime.Now.ToString("yyyyMMdd_HHmm");
@@ -54,6 +66,7 @@ public class AutoVersionOnBuild : IPreprocessBuildWithReport, IPostprocessBuildW
         {
             Directory.Move(buildFolder, newFolder);
         }
+
 
         PlayerSettings.productName = GetBaseProjectName();
 
