@@ -7,6 +7,7 @@ using System.IO;
 public class AutoVersionOnBuild : IPreprocessBuildWithReport, IPostprocessBuildWithReport
 {
     public int callbackOrder => 0;
+    
 
     string version;
 
@@ -14,20 +15,18 @@ public class AutoVersionOnBuild : IPreprocessBuildWithReport, IPostprocessBuildW
     {
         version = DateTime.Now.ToString("yyyyMMdd_HHmm");
         PlayerSettings.bundleVersion = version;
+        PlayerSettings.companyName = "Gaz Games";
     }
 
     public void OnPostprocessBuild(BuildReport report)
     {
-        // pasta onde a build foi gerada
         var buildPath = report.summary.outputPath;
 
-        // no Windows o outputPath vem como:
-        // .../MinhaPasta/MeuExe.exe
         var buildFolder = Path.GetDirectoryName(buildPath);
 
         var parent = Directory.GetParent(buildFolder).FullName;
 
-        string projectName = GetBaseProjectName();
+        string projectName = PlayerSettings.productName;
 
         string newFolder =
             Path.Combine(parent, $"{version}_{projectName}");
@@ -37,10 +36,12 @@ public class AutoVersionOnBuild : IPreprocessBuildWithReport, IPostprocessBuildW
             Directory.Move(buildFolder, newFolder);
         }
 
-        // restaura o nome do produto
-        PlayerSettings.productName = projectName;
     }
 
+
+    //Method to retrieve the project name without the date. Since the project renaming functionality was removed, I kept the function saved.
+
+#if false
     static string GetBaseProjectName()
     {
         string currentName = PlayerSettings.productName;
@@ -54,4 +55,5 @@ public class AutoVersionOnBuild : IPreprocessBuildWithReport, IPostprocessBuildW
 
         return currentName;
     }
+#endif
 }

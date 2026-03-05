@@ -9,6 +9,7 @@ public class VersionOverlay : MonoBehaviour
     [SerializeField] int fontSize = 16;
     [SerializeField] Color color = Color.white;
     [SerializeField] private bool dontDestroyOnLoad;
+    [SerializeField] private Vector2 textSize = new Vector2(600, 40);
 
  /*   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void EnsureExists()
@@ -25,7 +26,7 @@ public class VersionOverlay : MonoBehaviour
     void Awake()
     {
         GameObject obj = FindAnyObjectByType<VersionOverlay>().gameObject;
-        if(obj != null)
+        if(obj != null && obj != this.gameObject)
         {
             Destroy(obj);
         }
@@ -64,7 +65,7 @@ public class VersionOverlay : MonoBehaviour
                 style.alignment = TextAnchor.LowerRight;
                 break;
         }
-        Rect rect = GetRect(position, margin, 600, 40);
+        Rect rect = GetRect(position, margin, textSize.x, textSize.y);
         GUI.Label(new Rect(rect), txt, style);
     }
 
