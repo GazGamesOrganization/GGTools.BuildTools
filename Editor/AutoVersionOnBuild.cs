@@ -43,13 +43,13 @@ namespace GGTools.BuildTools
         {
             bool current = EditorPrefs.GetBool(PrefKey, false);
 
-            changeProductName = !EditorUtility.DisplayDialog(
-                "GGTools - Change Product Name",
-                $"Plataform: {report.summary.platform}\n" +
-                $"Do you want to keep the Product Name before starting the build?",
-                "Yes",
-                "No"
-            );
+            //changeProductName = !EditorUtility.DisplayDialog(
+            //    "GGTools - Change Product Name",
+            //    $"Plataform: {report.summary.platform}\n" +
+            //    $"Do you want to keep the Product Name before starting the build?",
+            //    "Yes",
+            //    "No"
+            //);
             TextInputDialog.Show("Would you kindly leave a Patch Notes for this build?", "100 characters", (value) =>
             {
                 patchNotes = value;
@@ -65,10 +65,10 @@ namespace GGTools.BuildTools
 
             version = DateTime.Now.ToString("yyyyMMdd_HHmm");
             PlayerSettings.bundleVersion = version;
-            if (changeProductName)
-            {
-                PlayerSettings.productName = $"{version}_{PlayerSettings.productName}";
-            }
+            //if (changeProductName)
+            //{
+            //    PlayerSettings.productName = $"{version}_{PlayerSettings.productName}";
+            //}
             PlayerSettings.companyName = COMPANY_NAME;
         }
 
